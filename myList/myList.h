@@ -22,9 +22,8 @@ public:
 
 private:
 
-	class Node
+	struct Node
 	{
-	public:
 		Node(T data=T(),Node *pNext = nullptr)
 		{
 			this->data = data;
@@ -39,8 +38,12 @@ private:
 	Node  *head;
 };
 
+std::sort(v.begin(),v.end(),)
+
 template<typename T>
 myList<T>::myList(){
+
+
 	size = 0;
 	head = nullptr;
 }
