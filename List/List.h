@@ -18,7 +18,7 @@ public:
 	void pop_front();
 	void push_back(T data);
 	void pop_back();
-	void insert(Size index, T data);
+	void insert_after(Size index, T data);
 	void erese(Size index);
 	T& at(Size index);
 	typename List<T>::Iterator begin();
@@ -61,6 +61,8 @@ private:
 		private:
 
 	};
+
+	Node* At_helper(Size index);
 private:
 	Size size;
 	typename List<T>::Node* head;
@@ -153,25 +155,29 @@ void List<T>::pop_back(){
 }
 
 template<typename T>
-void List<T>::insert(Size index, T data){
+void List<T>::insert_after(Size index, T data){
 	if(index > this->size){
 		return;
 	}else if(index == this->size ){
 		push_back(data);
+		this->size++;
 	}else if(index == 0){
 		push_front(data);
-	}else  if(index < this->size/2){
+		this->size++;
+	}else  if(index <= this->size/2){
 		List<T>::Node* tempNode = this->head;
 		for(int i = 0; i < index; ++i){
 			tempNode = tempNode->r_ptr;
 		}
 		tempNode->r_ptr = new Node(data,tempNode,tempNode->r_ptr);
+		this->size++;
 	}else{
 		List<T>::Node* tempNode = this->tail;
 		for(int i = this->size; i > index; --i){
 			tempNode = tempNode->l_ptr;
 		}
 		tempNode->l_ptr = new Node(data,tempNode->l_ptr,tempNode);
+		this->size++;
 	}
 }
 
@@ -183,7 +189,7 @@ void List<T>::erese(Size index){
 	}else if( index == this->size - 1){
 		pop_back();
 	}else{
-		Node* tempNode = &at(index);
+		Node* tempNode = At_helper(index);
 		Node* rNode = tempNode->r_ptr;
 		Node* lNode = tempNode->l_ptr;
 		rNode->l_ptr = lNode;
@@ -195,26 +201,33 @@ void List<T>::erese(Size index){
 
 
 template<typename T>
-T& List<T>::at(Size index){
-	if(index >= this->size|| index < 0 ){
+typename my::List<T>::Node* List<T>::At_helper(Size index){
+	if(index >= this->size || index < 0 ){
 		throw std::runtime_error("index unavailable");
 	}else if(index == this->size- 1){
-		return this->tail->data;
+		return this->tail;
 	}else if(index == 0){
-		return this->head->data;
-	}else  if(index < this->size/2){
+		return this->head;
+	}else  if(index <= this->size/2){
 		List<T>::Node* tempNode = this->head;
 		for(int i = 0; i < index; ++i){
 			tempNode = tempNode->r_ptr;
 		}
-		return tempNode->data;
+		return tempNode;
 	}else{
 		List<T>::Node* tempNode = this->tail;
 		for(int i = this->size; i > index; --i){
 			tempNode = tempNode->l_ptr;
 		}
-		return tempNode->data;
+		return tempNode;
 	}
+}
+
+
+template<typename T>
+T& List<T>::at(Size index){
+	auto tempNode = At_helper(index);
+	return tempNode->data;
 }
 
 template<typename T>

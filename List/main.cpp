@@ -12,13 +12,14 @@ int main(){
 	lst.push_back(4);
 	lst.push_back(5);
 	lst.push_back(6);
-	//lst.pop_front();
-	//lst.pop_back();
-	lst.insert(3,10);
-	//lst.push_front(10);
+	lst.pop_front();
+	lst.pop_back();
+	lst.insert_after(3,10);
+	lst.erese(3);
+	lst.push_front(10);
 	my::List<int>::Iterator it = lst.begin();
 	std::cout<<"===================================\n";
-	std::cout<<lst.at(3);
+	std::cout<<lst.at(3)<<std::endl;
 	while(it != lst.end()){
 		std::cout<<*it<<std::endl;
 		++it;
